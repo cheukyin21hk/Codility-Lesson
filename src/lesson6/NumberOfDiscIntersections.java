@@ -30,7 +30,13 @@ public class NumberOfDiscIntersections {
 	    if (numberOfWholeRange > MAX_OF_INTERSECT) {
 		return -1;
 	    } else {
-		return (int) combination(numberOfWholeRange, 2);
+		long result = (combination(numberOfWholeRange, 2) + (A.length - numberOfWholeRange)
+			* numberOfWholeRange);
+		if (result > MAX_OF_INTERSECT) {
+		    return -1;
+		} else {
+		    return (int) result;
+		}
 	    }
 	}
 
