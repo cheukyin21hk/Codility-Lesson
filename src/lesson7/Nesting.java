@@ -6,6 +6,9 @@ import java.util.Stack;
  * @author lohris
  * Target BIG-O in O(N)
  * Point to notice :
+ * For this solution , The worst case space complexity is O(N)
+ * to improve this problem , we can use int instead of stack for counting.
+ * This should be able to solve the problem too,because the content is not the matter.
  */
 public class Nesting {
 	public static void main(String args[]) {
