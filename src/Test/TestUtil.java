@@ -1,4 +1,4 @@
-package Test;
+package test;
 
 public class TestUtil {
 	public static void printArray(int[] a) {
