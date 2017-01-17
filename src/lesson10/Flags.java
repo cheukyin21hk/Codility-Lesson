@@ -10,6 +10,7 @@ public class Flags {
 	class Solution {
 		public int solution(int[] A) {
 			int maxFlag = (int) Math.floor(Math.sqrt(A.length));
+			System.out.println("maxFlag : " + maxFlag);
 			List<Integer> storedPeak = new ArrayList<>();
 			List<Integer> distanceBetweenPeak = new ArrayList<>();
 			boolean isPeak = false;
@@ -20,6 +21,7 @@ public class Flags {
 					storedPeak.add(i);
 				}
 			}
+
 			if (storedPeak.size() == 1) {
 				return 1;
 			}
@@ -27,25 +29,23 @@ public class Flags {
 			for (int i = 0; i < storedPeak.size() - 1; i++) {
 				distanceBetweenPeak.add(storedPeak.get(i + 1) - storedPeak.get(i));
 			}
-			System.out.println("Before : " + distanceBetweenPeak.toString());
-			System.out.println("Before size: " + distanceBetweenPeak.size());
-
+			System.out.println("Before the loop : " + distanceBetweenPeak.toString());
 			reduceListSizeToTarget(maxFlag, distanceBetweenPeak);
-			System.out.println("After : " + distanceBetweenPeak.toString());
-			System.out.println("After size :  " + distanceBetweenPeak.size());
+			System.out.println("After first Refactor : " + distanceBetweenPeak.toString());
 
 			int numberOfCount = maxFlag;
 			boolean isValidCount = false;
 			while (numberOfCount > 0) {
+				System.out.println("Number Of Count : " + numberOfCount);
+				System.out.println("Size Of distanceBetweenPeak : " + distanceBetweenPeak.size());
 
 				//If not enough number of peak
 				if (numberOfCount > distanceBetweenPeak.size() + 1) {
 					numberOfCount = distanceBetweenPeak.size() + 1;
 					//If the number of Peak equal to number of flag
 				} else if (numberOfCount == distanceBetweenPeak.size() + 1) {
-					reduceListSizeToTarget(numberOfCount, distanceBetweenPeak);
 					isValidCount = true && (distanceBetweenPeak.size() != 0);
-					for (int i = 0; i < distanceBetweenPeak.size(); i++) {
+					for (int i = 0; i < numberOfCount - 1 && isValidCount; i++) {
 						if (distanceBetweenPeak.get(i) < numberOfCount) {
 							isValidCount = false;
 						}
@@ -57,32 +57,38 @@ public class Flags {
 					}
 					//if the number of Peak Smaller than number of flag
 				} else {
+					System.out.println("Before : " + distanceBetweenPeak.toString());
+					System.out.println("Before size: " + distanceBetweenPeak.size());
 					reduceListSizeToTarget(numberOfCount, distanceBetweenPeak);
-					if (distanceBetweenPeak.size() + 1 > numberOfCount) {
-						return numberOfCount;
-					} else {
-						isValidCount = true && (distanceBetweenPeak.size() != 0);
-						for (int i = 0; i < distanceBetweenPeak.size(); i++) {
-							if (distanceBetweenPeak.get(i) < numberOfCount) {
-								isValidCount = false;
-							}
-						}
-						if (isValidCount) {
-							return numberOfCount;
-						} else {
-							numberOfCount--;
+					System.out.println("After : " + distanceBetweenPeak.toString());
+					System.out.println("After size :  " + distanceBetweenPeak.size());
+					isValidCount = true && (distanceBetweenPeak.size() != 0);
+					for (int i = 0; i < numberOfCount - 1; i++) {
+						if (distanceBetweenPeak.get(i) < numberOfCount) {
+							isValidCount = false;
 						}
 					}
+					if (isValidCount) {
+						return numberOfCount;
+					} else {
+						numberOfCount--;
+					}
 				}
+				System.out.println("");
 			}
 
 			return 0;
 		}
 
 		private void reduceListSizeToTarget(int targetValue, List<Integer> distanceBetweenPeak) {
-			if (distanceBetweenPeak.size() > targetValue) {
+			System.out.println("Method ReduceListToTarget with parameter :");
+			System.out.println("parameter targetValue : " + targetValue);
+			System.out.println("parameter distanceBetweenPeak : " + distanceBetweenPeak.toString());
+
+			if (distanceBetweenPeak.size() > targetValue - 1) {
 				int baseIndex = 0;
-				while (distanceBetweenPeak.size() > targetValue - 1 || baseIndex < distanceBetweenPeak.size() - 1) {
+				while (distanceBetweenPeak.size() > targetValue - 1 && baseIndex < distanceBetweenPeak.size() - 1) {
+
 					if (distanceBetweenPeak.get(baseIndex) < targetValue) {
 						distanceBetweenPeak.set(baseIndex, distanceBetweenPeak.get(baseIndex) + distanceBetweenPeak.get(baseIndex + 1));
 						distanceBetweenPeak.remove(baseIndex + 1);
@@ -101,7 +107,13 @@ public class Flags {
 
 	public static void main(String args[]) {
 		Flags flags = new Flags();
-		int[] a = TestDataUtil.generateRandArray(10000, 10, 0);
+
+		int[] a = { 1, 5, 3, 4, 3, 4, 1, 2, 3, 4, 6, 2 };
+
+		TestUtil.printArray(a);
+		flags.runTest(a);
+
+		a = TestDataUtil.generateRandArray(100, 2, 0);
 		TestUtil.printArray(a);
 		flags.runTest(a);
 	}
