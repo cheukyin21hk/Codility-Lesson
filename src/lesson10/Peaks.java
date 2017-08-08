@@ -49,7 +49,7 @@ public class Peaks {
         public int solution(int[] A) {
 
             List<Integer> peakValue = new ArrayList<>();
-            for (int i = 1; i < A.length-1; i++) {
+            for (int i = 1; i < A.length - 1; i++) {
                 if (isPeak(A, i)) {
                     peakValue.add(i);
 
@@ -63,22 +63,22 @@ public class Peaks {
                 int interval = A.length / i;
                 int acceptabledMiss = peakValue.size() - i;
                 int actualMissed = 0;
-                for (int k = 0; k < i && actualMissed <= acceptabledMiss; ) {
-                    for (int j = 0; j < peakValue.size() && actualMissed <= acceptabledMiss; j++) {
-                        int upperBound = (k + 1) * interval - 1;
-                        int lowerBound = k * interval;
-                        boolean hit = isBetween(peakValue.get(j), lowerBound, upperBound);
-                        if (hit) {
-                            k++;
-                        } else {
-                            actualMissed++;
-                        }
+                int currentBucket = 0;
+                for (int j = 0; j < peakValue.size() && actualMissed <= acceptabledMiss; j++) {
+                    int upperBound = (currentBucket + 1) * interval - 1;
+                    int lowerBound = currentBucket * interval;
+                    boolean hit = isBetween(peakValue.get(j), lowerBound, upperBound);
+                    if (hit) {
+                        currentBucket++;
+                    } else {
+                        actualMissed++;
                     }
                 }
                 if (acceptabledMiss >= actualMissed) {
                     return i;
                 }
             }
+
             return 0;
         }
 
