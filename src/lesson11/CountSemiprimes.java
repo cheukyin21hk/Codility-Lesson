@@ -6,12 +6,12 @@ package lesson11;
 public class CountSemiprimes {
     public static void main(String args[]) {
         CountSemiprimes cf = new CountSemiprimes();
-        cf.runTest(2147483647);
+        cf.runTest(26, new int[]{1, 4, 16}, new int[]{26, 10, 20});
     }
 
-    public void runTest(int testData) {
+    public void runTest(int testData, int[] q, int[] p) {
         CountSemiprimes.Solution proposedSolution = new CountSemiprimes.Solution();
-        int[] result = proposedSolution.solution(26, new int[]{1, 4, 16}, new int[]{26, 10, 20});
+        int[] result = proposedSolution.solution(testData, q, p);
         for (int currentCount : result) {
             System.out.println(currentCount);
         }
